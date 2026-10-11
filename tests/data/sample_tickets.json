@@ -1,0 +1,22 @@
+[
+  {"ticket_id": "T-001", "description": "VPN disconnects every 10 minutes on home Wi-Fi", "category": "network", "severity": "high", "created_at": "2026-10-01T09:30:00"},
+  {"ticket_id": "T-002", "description": "Cannot log in to payroll portal after password reset", "category": "access", "severity": "medium", "created_at": "2026-10-01T10:05:00"},
+  {"ticket_id": "T-003", "description": "Laptop battery drains in under an hour", "category": "hardware", "severity": "low", "created_at": "2026-10-02T14:20:00"},
+  {"ticket_id": "T-004", "description": "Outlook crashes on startup after the latest Office update", "category": "software", "severity": "high", "created_at": "2026-10-02T15:45:00"},
+  {"ticket_id": "T-005", "description": "Emails to external clients bounce with a 550 relay denied error", "category": "email", "severity": "critical", "created_at": "2026-10-03T08:10:00"},
+  {"ticket_id": "T-006", "description": "Office floor 3 Wi-Fi is down for all users, wired ports still work", "category": "network", "severity": "critical", "created_at": "2026-10-03T08:55:00"},
+  {"ticket_id": "T-007", "description": "New hire needs access to the shared finance drive", "category": "access", "severity": "low", "created_at": "2026-10-04T11:15:00"},
+  {"ticket_id": "T-008", "description": "External monitor flickers when connected through the docking station", "category": "hardware", "severity": "low", "created_at": "2026-10-04T13:00:00"},
+  {"ticket_id": "T-009", "description": "Excel freezes when opening workbooks larger than 50 MB", "category": "software", "severity": "medium", "created_at": "2026-10-05T09:00:00"},
+  {"ticket_id": "T-010", "description": "Shared mailbox support@ stopped receiving messages since yesterday", "category": "email", "severity": "high", "created_at": "2026-10-05T09:40:00"},
+  {"ticket_id": "T-011", "description": "DNS lookups for internal.example.com intermittently time out", "category": "network", "severity": "medium", "created_at": "2026-10-05T16:25:00"},
+  {"ticket_id": "T-012", "description": "MFA prompt never arrives on my phone when signing in to the HR system", "category": "access", "severity": "high", "created_at": "2026-10-06T07:50:00"},
+  {"ticket_id": "T-013", "description": "Keyboard keys E and R are unresponsive on a company laptop", "category": "hardware", "severity": "medium", "created_at": "2026-10-06T10:30:00"},
+  {"ticket_id": "T-014", "description": "Production ERP application returns 500 errors for every user", "category": "software", "severity": "critical", "created_at": "2026-10-06T12:05:00"},
+  {"ticket_id": "T-015", "description": "Calendar invites show the wrong time zone after daylight saving change", "category": "email", "severity": "low", "created_at": "2026-10-07T08:20:00"},
+  {"ticket_id": "T-016", "description": "Admin account locked out after repeated failed sign-in attempts from unknown IP", "category": "access", "severity": "critical", "created_at": "2026-10-07T14:10:00"},
+  {"ticket_id": "T-017", "description": "Network printer on floor 2 is offline and cannot be reached by IP", "category": "network", "severity": "low", "created_at": "2026-10-08T09:15:00"},
+  {"ticket_id": "T-018", "description": "Server room disk array reports a degraded RAID volume", "category": "hardware", "severity": "high", "created_at": "2026-10-08T11:45:00"},
+  {"ticket_id": "T-019", "description": "Teams screen sharing shows a black screen during client calls", "category": "software", "severity": "medium", "created_at": "2026-10-09T15:00:00"},
+  {"ticket_id": "T-020", "description": "Mailbox is full and cannot send or receive, need archive enabled", "category": "email", "severity": "medium", "created_at": "2026-10-09T16:35:00"}
+]

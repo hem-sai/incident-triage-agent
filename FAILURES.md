@@ -130,3 +130,13 @@ Severity key:
 - - -
 
 2026-10-08 · P2 · Python-dict/counting · Method-drill Ex.7: prompt (and the code comment) said characters appearing MORE than once, as a sorted list; first attempt used `d[c] > 2` and no `sorted()` → printed `['e']` instead of `['e', 'k', 'o']`, no crash, wrong answer went unnoticed until the morning review. Same misread-the-exact-ask habit as 10/8 Ex.9b (delimiter) and the result-shape misses on 10/3 and 10/4. Fix (Attempt 2 cell): `sorted([c for c in d if d[c] > 1])`. Habit fix: write the prompt phrase as a comparison in a comment ("more than once" = count > 1) before coding. Source: python/method_drills/2026-10-08-method_drill.ipynb
+
+---
+
+### 📅 2026-10-10
+
+2026-10-10 · P2 · DSA-sets · Longest Consecutive Sequence a1: three bugs in one file. (1) `seen = set()` was never filled from `nums`, and the loop ran `for x in seen`, so it iterated an empty set and the function always returned 0. (2) The run-start check was inverted: `if x-1 in seen` instead of `if x-1 not in seen`, so it would have counted from the middle of runs, not the start. (3) `run` and `step` were mixed: `run` was incremented but never used, and `best = max(step, best)` compared the wrong variable. Approach, complexity and edge-case sections were left as the unfilled template, so none of this was caught before coding. Fix: `seen = set(nums)`, loop over `seen`, start a run only when `x-1 not in seen`, use one counter for the run length. See lessons/06-hash-set-sequence-starts.md. Source: dsa/Week-02_Oct-05_to_Oct-11/2026-10-10 longest consecutive sequence-a1.md
+
+- - -
+
+2026-10-10 · P2 · Python-fundamentals · Method-drill Ex.4 (chain walk): asked to keep moving "as long as the CURRENT key exists" in `next_step`; code used `while next_step[start] in next_step`, which checks the NEXT position, not the current one. On `a→b→c→d` it counted 2 steps instead of 3 (stopped one hop early), and it would raise `KeyError` if `start` were ever not a key. The printed final position (`d`) looked right only because it was read as `next_step[start]`. Off-by-one from checking the wrong end of the hop, uncaught during the drill. Fix: `while start in next_step: start = next_step[start]; count += 1`. Same chain-walk idea as the Longest Consecutive Sequence inner loop. Source: python/method_drills/2026-10-10-method_drill.ipynb
