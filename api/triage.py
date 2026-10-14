@@ -16,31 +16,19 @@ class TriageResult(BaseModel):
     severity: Severity
     confidence: float = Field(..., ge=0, le=1)
 
-def triage_ticket(ticket: Ticket, client) -> TriageResult:
-    # build the prompt: tell the model the allowed categories/severities and "reply with JSON only"
-    # response = client.converse(...)
-    # text = ...
-    # data = json.loads(text)
-    # return TriageResult(**data)   (or TriageResult.model_validate(data))
 
+def triage_ticket(ticket: Ticket, client) -> TriageResult:
     prompt = f"""
     You are a triage assistant for IT support tickets.
     The ticket has the following description: {ticket.description}
     Please classify it into one of the following categories: {CATEGORIES}
     And assign it one of the following severities: {SEVERITIES}
-    Confidence should be a float between 0 and 1, indicating how confident you are in your classification.
+    Confidence should be a float between 0 and 1,
+    indicating how confident you are in your classification.
     Reply with JSON only, containing the keys 'category', 'severity', and 'confidence'.
     """
     response = client.converse(
-        modelId=MODEL_ID,
-        messages=[{
-            "role": "user",
-            "content": [
-                {
-                    "text": prompt
-                }
-            ]
-        }]
+        modelId=MODEL_ID, messages=[{"role": "user", "content": [{"text": prompt}]}]
     )
     text = response["output"]["message"]["content"][0]["text"]
     data = json.loads(text)
