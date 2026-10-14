@@ -117,6 +117,12 @@ Severity key:
 
 ---
 
+### 📅 2026-10-06
+
+2026-10-06 · P2 · DSA-two-pointers/complexity · Two Sum II first attempt: reused the plain Two Sum hash-map solution (`d[num] = index`, look up `target - num`) on a SORTED array. Output is correct, but it uses O(n) extra space and ignores the problem's O(1)-space constraint, which is the whole point of the sorted input (two pointers). Section 3 also recorded Time as O(n^2) when the single loop with O(1) dict lookups is O(n). Edge cases were written as "none". Two misses in one file: wrong tool for the constraint, and complexity stated without tracing the code. Fix: when the input is sorted, reach for two pointers (`L`, `R`, move `L` up if sum is too small, `R` down if too big) and state O(n) time / O(1) space; before writing Big-O, count passes over the input. Same under-stated-complexity family as 10/2 (twice) and 10/7. Source: dsa/Week-02_Oct-05_to_Oct-11/2026-10-06-two sum II-a1.md
+
+---
+
 ### 📅 2026-10-07
 
 2026-10-07 · P3 · DSA-two-pointers · Container With Most Water r1: first code moved both pointers every iteration (`L += 1; R -= 1`), skipping candidate pairs; self-caught and fixed to move only the shorter wall (`if height[L] < height[R]: L += 1 else: R -= 1`). Also stated Time as O(n^2) for what is a single-pass O(n) two-pointer solution, the same complexity-misstatement family as 10/2 and 10/6. Fix: before writing complexity, count passes over the input; a pointer pair that each move at most n steps is O(n). Source: dsa/Week-02_Oct-05_to_Oct-11/2026-10-07-Container With Most Water-r1.md
@@ -133,6 +139,12 @@ Severity key:
 
 ---
 
+### 📅 2026-10-09
+
+2026-10-09 · P3 · DSA-strings · Encode and Decode Strings r1 (length-prefix scheme): encode was right, decode had two bugs. (1) `length = int(s[index-1])` reads exactly one digit before `#`, so any word of length 10 or more decodes wrong (`"12#..."` gives 2, not 12). (2) A `for index, char in enumerate(s)` loop was nested inside `while i < len(s)`, so every pass rescanned the whole string from 0 and `i` was never used to resume where the last word ended; the first version also used `i <= len(s)` and `s[index-i]`. Needed help to land the fix. Fix: no `for`, walk with `i`: find the next `#` from `i` with a `j` pointer, `length = int(s[i:j])`, take `s[j+1 : j+1+length]`, then `i = j + 1 + length`. Edge cases listed ("numbers in string, separator") were never tested against the code. Source: dsa/Week-02_Oct-05_to_Oct-11/2026-10-09-encode decode string-r1.md
+
+---
+
 ### 📅 2026-10-10
 
 2026-10-10 · P2 · DSA-sets · Longest Consecutive Sequence a1: three bugs in one file. (1) `seen = set()` was never filled from `nums`, and the loop ran `for x in seen`, so it iterated an empty set and the function always returned 0. (2) The run-start check was inverted: `if x-1 in seen` instead of `if x-1 not in seen`, so it would have counted from the middle of runs, not the start. (3) `run` and `step` were mixed: `run` was incremented but never used, and `best = max(step, best)` compared the wrong variable. Approach, complexity and edge-case sections were left as the unfilled template, so none of this was caught before coding. Fix: `seen = set(nums)`, loop over `seen`, start a run only when `x-1 not in seen`, use one counter for the run length. See lessons/06-hash-set-sequence-starts.md. Source: dsa/Week-02_Oct-05_to_Oct-11/2026-10-10 longest consecutive sequence-a1.md
@@ -140,3 +152,33 @@ Severity key:
 - - -
 
 2026-10-10 · P2 · Python-fundamentals · Method-drill Ex.4 (chain walk): asked to keep moving "as long as the CURRENT key exists" in `next_step`; code used `while next_step[start] in next_step`, which checks the NEXT position, not the current one. On `a→b→c→d` it counted 2 steps instead of 3 (stopped one hop early), and it would raise `KeyError` if `start` were ever not a key. The printed final position (`d`) looked right only because it was read as `next_step[start]`. Off-by-one from checking the wrong end of the hop, uncaught during the drill. Fix: `while start in next_step: start = next_step[start]; count += 1`. Same chain-walk idea as the Longest Consecutive Sequence inner loop. Source: python/method_drills/2026-10-10-method_drill.ipynb
+
+---
+
+### 📅 2026-10-12
+
+2026-10-12 · P2 · Python-fundamentals · Method-drill Ex.1 (chain walk, repeat of 10/10 Ex.4): wrote `while hop[start] in hop`, which checks the NEXT position, not the current one. On `a→b→c→d` it counted 2 steps instead of 3, and it would raise `KeyError` if `start` were not a key. The "on paper" count was also 2 (there are 3 arrows: a→b, b→c, c→d), so the miss started before the code. The printed final position (`d`) looked right only because it was read as `hop[start]`. Second time in 3 days for the same off-by-one. Fix: `while start in hop: start = hop[start]; count += 1`, then print `start`. Habit fix: test the loop on the first and the last node by hand before running. Source: python/method_drills/2026-10-12-method_drill.ipynb
+
+- - -
+
+2026-10-12 · P3 · Python-builtins · Method-drill Ex.3(a): asked whether EVERY cell is exactly one character; wrote `all(char for char in board_row if len(char)==1)==len(board_row)`, which filters inside the generator and compares a bool to a length, printing `False` when the answer is `True`. Fix: `all(len(cell) == 1 for cell in board_row)`. The condition goes in the expression, not in a trailing `if`. Source: python/method_drills/2026-10-12-method_drill.ipynb
+
+- - -
+
+2026-10-12 · P2 · Python-stdlib · Method-drill Ex.4: `defaultdict` took three attempts. Attempt 1 `defaultdict(col, set())` (TypeError: first argument must be callable), attempt 2 `defaultdict(set).append(dig)` (AttributeError: a set has `.add`, not `.append`, and the dict was re-created inside the loop), attempt 3 correct for (a). Then (b) `Counter(by_col)` counted the sets themselves, not the number of pairs per column; (c) and (d) not done before the stop. Fix: `by_col = defaultdict(set)` once, outside the loop, then `by_col[col].add(dig)`; for (b) `counts[col] += 1` with `defaultdict(int)`, or `Counter(col for col, _ in pairs)`. Source: python/method_drills/2026-10-12-method_drill.ipynb
+
+- - -
+
+2026-10-12 · P2 · DSA-hashing · Valid Sudoku a1: wrote `if digit in (rows[r], cols[c], boxes[box]): return False`. That asks "is the digit one of these three set objects?", so it compares a string to a tuple of sets and is never true. The function returned True for every board, including invalid ones, and no error was raised. Rows, columns and box index (`(r // 3) * 3 + c // 3`) were all right; the check itself was the bug. Fix: `if digit in rows[r] or digit in cols[c] or digit in boxes[box]: return False`, one `in` per set. Habit fix: before running, say out loud what `x in (a, b)` tests (equality against a and b, not membership inside them), and run one board that must return False. Got there by reading the lesson 05 walkthrough, so the file is "solved with help". Source: dsa/Week-03_Oct-12_to_Oct-18/2026-10-12-Valid sudoku-a1.md
+
+---
+
+### 📅 2026-10-13
+
+2026-10-13 · P2 · DSA-hashing · Longest Consecutive Sequence a1: wrote the run-start check as `if x-1 in seen:` (backwards). That counts runs only from numbers that are NOT run starts, so every real start is skipped. The code returned `best - 1` for the test input and would return 0 when the list is one clean run. Fix: `if x-1 not in seen:`, so only the first number of a run starts the count. Habit fix: before running, say out loud what the `if` is selecting ("only numbers whose predecessor is missing"), then run `[100,4,200,1,3,2]` (expect 4). It was caught by running the sample, not by reading the code. The lesson 06 note already said `x - 1 not in seen`, so this was a transcription slip, not a missing concept. Source: dsa/Week-03_Oct-12_to_Oct-18/2026-10-13-longest consecutive sequence-a1.md
+
+---
+
+### 📅 2026-10-14
+
+2026-10-14 · P1 · AWS-bedrock · `scripts/bedrock_hello.py` (`converse` on `amazon.nova-micro-v1:0`, eu-north-1) failed with `ValidationException: Operation not allowed`. Not a code or IAM bug: the IAM user has AdministratorAccess, and the same error came back for the `eu.` inference profile, Nova Lite, Nova 2 Lite, Claude Haiku 4.5 and us-east-1, so the block is account-wide. One probe in eu-west-1 returned `AccessDeniedException: Your account is currently being verified (normally < 2 hours)`, so the likely cause is a new AWS account still in verification / Bedrock not yet enabled for it. Side finding: in eu-north-1 the base ID `amazon.nova-micro-v1:0` only supports INFERENCE_PROFILE, so once the account is cleared use `eu.amazon.nova-micro-v1:0`. Second bug waiting behind it: `response["output"]["message"][0]["content"]` should be `response["output"]["message"]["content"][0]["text"]` (`message` is a dict, not a list). Fix: wait for verification and re-run, and if it persists after a few hours check Billing for a valid payment method and open an AWS Support case; then switch the model ID to the `eu.` profile and fix the response indexing. Habit fix: when an API error looks like a code bug, test a second model and region before changing code. Source: scripts/bedrock_hello.py
