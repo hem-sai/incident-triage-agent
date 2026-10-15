@@ -1,5 +1,6 @@
 import boto3
-from fastapi import Depends, FastAPI
+from botocore.exceptions import ClientError
+from fastapi import Depends, FastAPI, HTTPException
 
 from api.models import Ticket
 from api.triage import TriageResult, triage_ticket
@@ -18,4 +19,10 @@ def get_bedrock_client():
 
 @app.post("/tickets")
 def create_ticket(ticket: Ticket, client=Depends(get_bedrock_client)) -> TriageResult:
-    return triage_ticket(ticket, client)
+    try:
+        return triage_ticket(ticket, client)
+    except ClientError:
+        raise HTTPException(status_code=503, detail="Service unavailable")
+    except ValueError:
+        # Safe to catch broadly: triage_ticket only raises ValueError from the parse/validate step.
+        raise HTTPException(status_code=502, detail="Bad gateway")

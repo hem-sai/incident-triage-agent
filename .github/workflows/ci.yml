@@ -2,12 +2,12 @@ name: CI
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.12"
-      - run: pip install pydantic pytest ruff
+      - run: pip install "fastapi[standard]" boto3 httpx2 pydantic pytest ruff
       - run: ruff check .
       - run: pytest
