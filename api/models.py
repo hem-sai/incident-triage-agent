@@ -12,7 +12,7 @@ class Ticket(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     ticket_id: str = Field(pattern=r"^T-\d{3,}$")
-    description: NonEmptyStr
+    description: NonEmptyStr  = Field(max_length=2000)
     category: Category
     severity: Severity
     created_at: datetime

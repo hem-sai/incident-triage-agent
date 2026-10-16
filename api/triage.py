@@ -32,4 +32,5 @@ def triage_ticket(ticket: Ticket, client) -> TriageResult:
     )
     text = response["output"]["message"]["content"][0]["text"]
     data = json.loads(text)
-    return TriageResult.model_validate(data)
+    usage = response.get("usage", {})
+    return TriageResult.model_validate(data), usage

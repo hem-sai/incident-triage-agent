@@ -7,7 +7,7 @@ response = client.converse(
     "role": "user",
     "content": [
         {
-            "text": "Hello this is my first time using Bedrock, can you tell me a joke?"
+            "text": "Hello this is my first time using Bedrock, can you tell me an classic joke?"
         }
     ]
 }]
