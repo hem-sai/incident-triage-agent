@@ -195,3 +195,25 @@ Severity key:
 - - -
 
 2026-10-16 · P2 · Python-logging · Task 3 request logging: first version set `status` with `"response" in locals()` checks in `finally`, which never matched, so every request would have logged `status=503`. After fixing that, I added `result, usage = triage_ticket(...)` inside the `try` and read `usage.get(...)` in `finally`, but `usage` was only assigned on success. On the 502 and 503 paths `triage_ticket` raised first, so `finally` raised `UnboundLocalError` and 6 tests failed (3 bad-model-output 502 cases, the 503 test, `test_logs_on_502`, `test_logs_on_503`). Before -> after: 6 failed / 8 passed -> 14 passed. Fix: set `status = "500"` and `usage: dict = {}` before the `try`, assign `status` in each branch, and read tokens with `.get(..., 0)`. Habit fix: a variable read in `finally` must be assigned before the `try`, because `finally` runs on every path, including the ones that fail early; the failure paths are the ones to test first. Source: api/main.py
+
+---
+
+### 📅 2026-10-18
+
+2026-10-18 · P2 · testing/imports · Gate redo (blank file, `C:\gate_r1`): could not recall the TestClient import, so the clock stopped on a lookup before the first API test existed. Fix: `from fastapi.testclient import TestClient` (it lives under `fastapi.testclient`, not `fastapi`). Habit fix: write the three FastAPI test imports from memory once a day until they are automatic (`FastAPI`, `HTTPException`, `TestClient` is in the 18 Oct method drill). Source: tests/test_main.py
+
+- - -
+
+2026-10-18 · P2 · testing/pytest · Gate redo: the fixture that returns the TestClient was named `test_client`, but the tests asked for a parameter called `client`, so pytest could not match them. Fix: the fixture name must equal the argument name, so `@fixture def client(): return TestClient(app)` and `def test_valid(client, ...)`. Habit fix: write the test function signature first, then name the fixture to match it. Source: tests/test_main.py
+
+- - -
+
+2026-10-18 · P2 · testing/api · Gate redo: wrote `app.post("/incidents", json=...)` in the valid-body test instead of `client.post(...)`. `app` is the FastAPI object, where `.post` is the decorator that REGISTERS a route; `client` is the TestClient that SENDS a request. Fix: `res = client.post("/incidents", json=valid_ticket)`. Habit fix: in a test, the thing being called is always the client, never `app`. Source: tests/test_main.py
+
+- - -
+
+2026-10-18 · P2 · testing/pytest · Gate redo: forgot how to assert that bad data raises a validation error in the model test; could not recall `pytest.raises`. Fix: `with pytest.raises(ValidationError): Incident.model_validate(bad_data)` (the call that should fail goes INSIDE the `with`, and the test passes BECAUSE the error is raised). Habit fix: 18 Oct method drill Ex.5 and Ex.6 drill the import and the pattern. Source: tests/test_model.py
+
+- - -
+
+2026-10-18 · P3 · lint/ruff · Found by the coach reading `C:\gate_r1`: `res = Incident.model_validate(invalid)` inside the `pytest.raises` block assigns a variable that is never used, so `ruff check .` reports F841 and the capstone CI ruff step would go red on the same pattern. Fix: drop the assignment and call `Incident.model_validate(invalid)` on its own. Habit fix: run `ruff check .` before saying a drill is done. Source: tests/test_model.py
