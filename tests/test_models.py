@@ -4,6 +4,7 @@ from pydantic import ValidationError
 from api.loader import load_tickets
 from api.models import Ticket
 
+
 @pytest.fixture
 def valid_ticket_data() -> dict:
     return {

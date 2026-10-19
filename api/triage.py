@@ -17,7 +17,7 @@ class TriageResult(BaseModel):
     confidence: float = Field(..., ge=0, le=1)
 
 
-def triage_ticket(ticket: Ticket, client) -> TriageResult:
+def triage_ticket(ticket: Ticket, client) -> tuple[TriageResult, dict[str, int]]:
     prompt = f"""
     You are a triage assistant for IT support tickets.
     The ticket has the following description: {ticket.description}

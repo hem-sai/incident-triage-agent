@@ -17,8 +17,8 @@ logger = logging.getLogger("triage")
 app = FastAPI()
 
 config = Config(
-    connect_timeout=60,
-    read_timeout=60,
+    connect_timeout=15,
+    read_timeout=30,
     retries={"max_attempts": 3, "mode": "standard"},
 )
 

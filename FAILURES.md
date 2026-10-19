@@ -217,3 +217,13 @@ Severity key:
 - - -
 
 2026-10-18 · P3 · lint/ruff · Found by the coach reading `C:\gate_r1`: `res = Incident.model_validate(invalid)` inside the `pytest.raises` block assigns a variable that is never used, so `ruff check .` reports F841 and the capstone CI ruff step would go red on the same pattern. Fix: drop the assignment and call `Incident.model_validate(invalid)` on its own. Habit fix: run `ruff check .` before saying a drill is done. Source: tests/test_model.py
+
+---
+
+### 📅 2026-10-19
+
+2026-10-19 · P2 · api/dependency-injection · `api/main.py` read-aloud (missed question 1 from 17 Oct): could not say why `create_ticket` takes `client=Depends(get_bedrock_client)` instead of creating the boto3 client inside the function or at module level. Reason: `Depends` makes FastAPI call `get_bedrock_client()` for each request and pass the result in as `client`. The route never builds its own client, so (1) tests can swap it with `app.dependency_overrides[get_bedrock_client] = lambda: fake_client` and run with zero AWS calls, which is how the 502 and 503 tests work; (2) the region and the timeout/retry `config` live in one place; (3) nothing talks to AWS or needs credentials at import time. Fix: say it as "the dependency is the seam where tests replace Bedrock". Side note: as written, a new boto3 client is built on every request; fine for now, cache it if latency matters later. Habit fix: before saying a line of `main.py` is understood, name what breaks if it is removed (here: tests would need real AWS). Source: api/main.py
+
+- - -
+
+2026-10-19 · P2 · api/timeouts · `api/main.py` read-aloud (missed question 2 from 17 Oct): did not understand `Config(connect_timeout=15, read_timeout=30, retries={"max_attempts": 3, "mode": "standard"})`. Now understood. `connect_timeout` is the longest wait (seconds) to open the network connection to the Bedrock endpoint; if it is hit, the call fails before any model work starts, so it points at network or endpoint trouble. `read_timeout` is the longest wait for the response bytes after the request was sent; with `converse` (not streaming) the model's whole generation time counts as waiting, so a slow or long answer over 30 s fails even though Bedrock is still working. Retries in `standard` mode re-send on timeouts, so per botocore docs one request can take several times 30 s before it finally fails (worst case roughly 2 min with 1 try + 3 retries), which is longer than most API gateways and clients will wait. Fix: pick the timeouts from the real latency numbers (Wk12), and keep the worst case (timeout x attempts) under the caller's own limit. Habit fix: when a config value has a number, write the unit and the worst case next to it in the code comment. Source: api/main.py
