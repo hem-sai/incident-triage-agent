@@ -4,7 +4,7 @@ import uuid
 
 import boto3
 from botocore.config import Config
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import Depends, FastAPI, HTTPException
 
 from api.models import Ticket
@@ -41,7 +41,8 @@ def create_ticket(ticket: Ticket, client=Depends(get_bedrock_client)) -> TriageR
         result, usage =  triage_ticket(ticket, client)
         status = "200"
         return result
-    except ClientError:
+    except (ClientError, BotoCoreError):
+        # ReadTimeoutError / ConnectTimeoutError derive from BotoCoreError, not ClientError.
         status = "503"
         raise HTTPException(status_code=503, detail="Service unavailable")
     except ValueError:

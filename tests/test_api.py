@@ -1,7 +1,7 @@
 import logging
 
 import pytest
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, ReadTimeoutError
 from fastapi.testclient import TestClient
 
 from api.main import app, get_bedrock_client
@@ -137,3 +137,12 @@ def test_non_english_description_returns_200_and_logs(caplog, description):
     assert len(msgs) == 1 and "status=200" in msgs[0]
     # the ticket text itself must not be logged
     assert description not in msgs[0]
+
+class TimeoutClient:
+    def converse(self, **kwargs):
+        raise ReadTimeoutError(endpoint_url="https://bedrock")
+
+def test_timeout_returns_503():
+    client = make_client(TimeoutClient())
+    response = client.post("/tickets", json=VALID_TICKET)
+    assert response.status_code == 503
