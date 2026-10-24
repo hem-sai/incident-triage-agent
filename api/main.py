@@ -2,13 +2,11 @@ import logging
 import time
 import uuid
 
-import boto3
-from botocore.config import Config
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import Depends, FastAPI, HTTPException
 
 from api.models import Ticket
-from api.triage import TriageResult, triage_ticket
+from api.triage import TriageResult, build_triage_runnable, triage_ticket
 
 logging.basicConfig(level=logging.INFO)
 
@@ -16,29 +14,23 @@ logger = logging.getLogger("triage")
 
 app = FastAPI()
 
-config = Config(
-    connect_timeout=15,
-    read_timeout=30,
-    retries={"max_attempts": 3, "mode": "standard"},
-)
 
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
 
-
-def get_bedrock_client():
-    return boto3.client("bedrock-runtime", region_name="eu-north-1", config=config)
+def get_runnable():
+    return build_triage_runnable()
 
 
 @app.post("/tickets")
-def create_ticket(ticket: Ticket, client=Depends(get_bedrock_client)) -> TriageResult:
+def create_ticket(ticket: Ticket, runnable=Depends(get_runnable)) -> TriageResult:
     request_id = uuid.uuid4().hex[:8]
     start = time.perf_counter()
     status = "500"
     usage: dict = {}
     try:
-        result, usage =  triage_ticket(ticket, client)
+        result =  triage_ticket(ticket, runnable=runnable)
         status = "200"
         return result
     except (ClientError, BotoCoreError):
@@ -46,7 +38,7 @@ def create_ticket(ticket: Ticket, client=Depends(get_bedrock_client)) -> TriageR
         status = "503"
         raise HTTPException(status_code=503, detail="Service unavailable")
     except ValueError:
-        # Safe to catch broadly: triage_ticket only raises ValueError from the parse/validate step.
+        # pydantic ValidationError and LangChain OutputParserException both subclass ValueError
         status = "502"
         raise HTTPException(status_code=502, detail="Bad gateway")
     finally:

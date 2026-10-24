@@ -233,3 +233,35 @@ Severity key:
 ### 📅 2026-10-21
 
 2026-10-21 · P2 · api · botocore timeouts returned 500 instead of 503: `ReadTimeoutError` and `ConnectTimeoutError` derive from `BotoCoreError`, not `ClientError`, so `except ClientError` in `create_ticket` missed them and the exception escaped as an unhandled 500 ("your code is broken" instead of "try again later"). Proved first with `test_timeout_returns_503` (fake client raising `ReadTimeoutError(endpoint_url="https://bedrock")`): it failed with the raw `ReadTimeoutError`. Before -> after: 1 failed -> passing. Fix: `except (ClientError, BotoCoreError)` in api/main.py, so both timeout classes (and other botocore client-side errors) map to 503. Habit fix: before relying on an `except`, check the exception's base classes (`ReadTimeoutError.__mro__`) and write the failing test first. Source: api/main.py, tests/test_api.py
+
+---
+
+### 📅 2026-10-23
+
+2026-10-23 · P2 · DSA-sliding-window · you removed s[right] from the set instead of s[left] → corrected to window_state.remove(s[left])
+
+---
+
+### 📅 2026-10-24
+
+2026-10-24 · P1 · api/dependency-injection · Task 2 (structured output): rewrote `triage_ticket` to call `runnable.invoke(prompt)` but left `get_bedrock_client()` in `api/main.py` as the dependency, so the route would have passed a raw boto3 client into `.invoke()`. A boto3 client has no `.invoke`, so every request would raise `AttributeError`, which no `except` catches, so every ticket would return 500. Found on review before the first real call, not by a test. Fix: `def get_runnable(): return build_triage_runnable()` and `Depends(get_runnable)`. The model is still built lazily, so nothing calls AWS at import time. Habit fix: when a function's parameter changes type (client to runnable), grep for every caller and every `Depends` that feeds it before running. Source: api/main.py
+
+- - -
+
+2026-10-24 · P2 · api/timeouts · Task 2: the botocore `Config(connect_timeout=15, read_timeout=30, retries=...)` stayed in `api/main.py` and only fed the old boto3 client. `ChatBedrockConverse(...)` was built without it, so the LangChain call silently ran on default timeouts and retries, and the 503 timeout mapping from 10/21 would have been guarding settings that no longer applied. Nothing crashed, so no test noticed. Fix: move `config` into `api/triage.py` and pass `config=config` to `ChatBedrockConverse`; delete the dead `get_bedrock_client`, `boto3` and `Config` from main.py. Habit fix: after swapping a client, list every setting the old one carried (region, timeouts, retries) and check each one reached the new one. Source: api/triage.py, api/main.py
+
+- - -
+
+2026-10-24 · P2 · testing/dependency-overrides · Task 3: tests were half-migrated. `make_client` first still overrode `get_bedrock_client`, which nothing depends on anymore, so the override did nothing and every test would have called the real `get_runnable()` and hit AWS. Then `FakeRunnable` had no `invoke`, tests still passed `text=` to it, the old `FakeClient.converse` fakes no longer matched, and `TimeoutClient` / `FailingRunnable` were deleted but still used (ruff F821 on both). Before -> after: 13 ruff errors and a suite that would call AWS -> ruff clean and 19 passed, zero AWS calls. Fix: one `FakeRunnable(result=None, error=None)` with `.invoke(prompt)`, override `get_runnable`, and rewrite the old tests (bad-JSON cases deleted, since the output is no longer parsed by my code; token log assertions changed to 0). Habit fix: after changing a dependency, check that the test override key is the same function the route uses, and run the suite with no AWS credentials to prove nothing escapes. Source: tests/test_api.py
+
+- - -
+
+2026-10-24 · P3 · lint/ruff · Task 4: `uv run ruff check .` reported 13 errors: the old `_triage_ticket` and `import json` left in `api/triage.py`, an unused `MODEL` constant, an inner import inside `get_runnable()`, unsorted imports, about 10 unused imports in tests/test_api.py, and two E712/E501 hits in the untracked `scratch/` scripts. Fix: delete the dead code, `ruff check . --fix`, and add `exclude = ["scratch"]` to `[tool.ruff]`. Also removed the leftover "Reply should contain only the keys..." prompt line, since `with_structured_output` already carries the schema. Habit fix: run `ruff check .` after every refactor, not only at the end. Source: api/triage.py, tests/test_api.py
+
+- - -
+
+2026-10-24 · P3 · shell/windows · Task 4.1: pasted `curl -X POST ... -d @ticket.json` into PowerShell. There `curl` is an alias for `Invoke-WebRequest`, which has no `-X` / `-H` in curl's meaning, and `@ticket.json` is parsed as splatting (`SplattingNotPermitted`, then `Cannot bind parameter 'Headers'`). The request never reached the API. Fix: `curl.exe` (the real binary) with the path quoted: `curl.exe -X POST localhost:8000/tickets -H "Content-Type: application/json" -d "@ticket.json"`. Habit fix: on Windows PowerShell always type `curl.exe`. Source: ticket.json
+
+- - -
+
+2026-10-24 · P3 · tooling/files · Task 4.1: after switching to `curl.exe`, it failed with `Failed to open ticket.json` because the task said to use a JSON file but I never created one. Fix: create `ticket.json` (a body matching the `Ticket` model) in the folder curl runs from; the real call then returned 200 `{"category":"network","severity":"medium","confidence":0.85}`. Habit fix: when a step says "use file X", `ls` for it first. Source: ticket.json
