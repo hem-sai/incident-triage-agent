@@ -34,6 +34,8 @@ First run of `uv run python -m scripts.run_baseline` on the 20 tickets in `tests
 
 `baseline: 18/20 category accuracy, 0 parse failures`
 
+`structured-output baseline: 17/20 category accuracy, 0 parse failures (LangChain with_structured_output, Nova Micro, 25 Oct)`
+
 Note: pytest uses a fake Bedrock client, so it proves plumbing, not model behaviour.
 
 ## Folders
