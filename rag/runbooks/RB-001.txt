@@ -1,0 +1,8 @@
+# RB-001: VPN keeps disconnecting (network)
+Categories: network
+
+## Steps
+1. Confirm the VPN keeps disconnecting: note how often it drops and whether other apps (browser, Teams) lose connection at the same time.
+2. Check the internet connection itself: switch from Wi-Fi to a wired connection, or to another network, and reconnect the VPN.
+3. Restart the VPN client and reconnect. If it still drops, update or reinstall the client, then restart the computer.
+4. If it still keeps disconnecting, escalate to the network team with the drop times and the VPN client log.

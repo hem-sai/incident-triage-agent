@@ -1,0 +1,8 @@
+# RB-002: Account locked after password attempts (access)
+Categories: access
+
+## Steps
+1. Confirm the account is locked after too many wrong password attempts: the login error says "account locked" or "too many attempts".
+2. Verify the user's identity as per policy, then unlock the account (help desk or directory admin console).
+3. Reset the password and ask the user to sign in with the new one.
+4. Verify access to the system. If the account locks again, look for old saved passwords on the user's phone or other devices.

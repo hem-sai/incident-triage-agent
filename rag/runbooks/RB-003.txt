@@ -1,0 +1,8 @@
+# RB-003: disk full on an app server (software)
+Categories: software
+
+## Steps
+1. Confirm the app server disk is full: `df -h` shows a filesystem at or near 100%.
+2. Find the biggest directories: `du -xh --max-depth=1 /var | sort -h`. Application logs and temp files are the usual cause.
+3. Compress or rotate old application logs and clear temp files. Do not delete anything you cannot identify.
+4. Verify `df -h` is back under 80% and the application is healthy.

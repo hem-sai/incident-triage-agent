@@ -1,0 +1,8 @@
+# RB-005: mailbox full (email)
+Categories: email
+
+## Steps
+1. Confirm the mailbox is full: the user cannot receive mail or gets a "mailbox full" bounce, and the admin console shows usage at the quota.
+2. Ask the user to delete large attachments and empty Deleted Items and Junk, or archive old mail.
+3. If the user still needs the mail, raise the quota or enable an archive mailbox in the admin console.
+4. Verify by sending a test email to the mailbox and confirming it arrives.

@@ -1,0 +1,9 @@
+# RB-004: disk full on a database host (software)
+Categories: software
+
+## Steps
+1. Confirm the database host disk is full: `df -h` shows which mount is full (data, logs or backups).
+2. Find what grew: transaction logs, binary logs, temp files or old backups, using `du -sh` on the database log and backup directories.
+3. Never delete database data files by hand. Free space with the database's own tools: purge old transaction/binary logs only after confirming the backup and replicas no longer need them, and move old backups off the host.
+4. If the data itself is the cause, escalate to the DBA to extend the volume.
+5. Verify the database accepts writes again and `df -h` is under 80%.
