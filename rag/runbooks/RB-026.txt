@@ -1,0 +1,9 @@
+# RB-026: no audio or microphone in Teams meetings (software)
+Categories: software
+
+## Steps
+1. Confirm whether the user cannot hear others, cannot be heard, or both, and whether other apps play sound.
+2. In the Teams meeting, open device settings and select the right speaker and microphone. Check the microphone is not muted, in Teams or on the headset.
+3. In Windows settings, check the app is allowed to use the microphone and the correct input device is the default.
+4. Sign out of Teams, quit it completely, and join the meeting again. Clear the Teams cache if the problem returns.
+5. If the headset works on another computer but not here, escalate to desktop support to check the audio driver.

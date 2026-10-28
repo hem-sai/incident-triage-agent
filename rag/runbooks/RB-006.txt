@@ -1,0 +1,9 @@
+# RB-006: password expired, user cannot log in (access)
+Categories: access
+
+## Steps
+1. Confirm the password has expired: the login screen says "your password has expired" or "you must change your password". If it says the account is locked, this is a different problem.
+2. If the user can reach the sign-in page, open the self-service password change page and set a new password that meets the policy (length, no reuse of recent passwords).
+3. If the user is off the corporate network, connect the VPN first or use the web-based reset portal, then change the password.
+4. Update the saved password on the phone, mail client and mapped drives. An old saved password causes repeated failed logins and locks the account.
+5. If the change is rejected, escalate to the service desk to reset the password and force a change at next login.

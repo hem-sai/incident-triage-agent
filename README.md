@@ -27,14 +27,18 @@ where `ticket.json` is:
 Real response: `{"category":"network","severity":"high","confidence":0.95}`
 
 ## How a request flows
-The JSON body is validated into a Pydantic `Ticket`; a bad body (missing field, empty description, wrong type) is rejected by FastAPI with **422** before any model call. `triage_ticket` builds a prompt from the description and calls Bedrock `converse`. The reply text is parsed as JSON and validated into a `TriageResult` (category and severity are `Literal` values, confidence is 0 to 1), and that is returned as JSON. If the model's text is not valid JSON or fails validation, the route returns **502**; if Bedrock itself fails (`ClientError`: throttling, access, network), it returns **503**. Every request writes one log line with `request_id`, `status`, `latency_ms` and token counts (never the ticket text or model output).
+The JSON body is validated into a Pydantic `Ticket`; a bad body (missing field, empty description, wrong type) is rejected by FastAPI with **422** before any model call. `triage_ticket` sends the description to Bedrock Nova Micro through LangChain `ChatBedrockConverse.with_structured_output(TriageResult)`, which returns a validated `TriageResult` (category and severity are `Literal` values, confidence is 0 to 1). If the output cannot be parsed or fails validation (`ValueError`), the route returns **502**. If the Bedrock call fails (`ClientError` such as throttling or access, or `BotoCoreError` such as read and connect timeouts), it returns **503**. Every request writes one log line with `request_id`, `status` and `latency_ms` (never the ticket text or model output). Token counts are logged as 0 for now because structured output drops the usage data (see `TODO.md`).
 
 ## Baseline
-First run of `uv run python -m scripts.run_baseline` on the 20 tickets in `tests/data/sample_tickets.json` (single run, no retries):
+Command: `uv run python -m scripts.run_baseline` on the 20 tickets in `tests/data/sample_tickets.json`. Every row is a single run, no retries, Nova Micro, temperature 0.
 
-`baseline: 18/20 category accuracy, 0 parse failures`
+| Date | Method | Category accuracy | Parse failures |
+|------|--------|-------------------|----------------|
+| 16 Oct | Raw Bedrock `converse`, JSON parsed by hand | 18/20 | 0 |
+| 25 Oct | LangChain `with_structured_output` | 17/20 | 0 |
+| 28 Oct | LangChain `with_structured_output` (same code) | 20/20 | 0 |
 
-`structured-output baseline: 17/20 category accuracy, 0 parse failures (LangChain with_structured_output, Nova Micro, 25 Oct)`
+The 25 Oct and 28 Oct runs use the same code, model and temperature, and the score moved by 3 tickets. So the baseline is noisy: on 20 tickets one ticket is 5 points, and a single run cannot show that one setup beats another. Do not claim a method change moved accuracy until the same setup is run several times or tested on the 30-question golden set.
 
 Note: pytest uses a fake Bedrock client, so it proves plumbing, not model behaviour.
 

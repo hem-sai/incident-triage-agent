@@ -1,0 +1,9 @@
+# RB-010: VPN cannot connect at all (network)
+Categories: network
+
+## Steps
+1. Confirm the VPN never connects: it fails on the first attempt with an error or stays on "Connecting" and times out. If it connects and then drops, this is a different problem.
+2. Check the internet works without the VPN by opening a public website. If it does not, fix the home or office connection first.
+3. Check the account: sign in to the company web portal with the same username and password and the MFA code. A locked account, an expired password or a wrong MFA code stops the VPN login.
+4. Check the VPN client: confirm the gateway address is correct, restart the client, and reinstall it if the error stays.
+5. If it still will not connect, escalate to the network team with the exact error message and the time.

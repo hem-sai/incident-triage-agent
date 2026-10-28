@@ -1,0 +1,9 @@
+# RB-029: expected email not received (email)
+Categories: email
+
+## Steps
+1. Confirm the sender's address, the date and time sent and the subject, and whether other mail arrives normally.
+2. Search all folders, including Junk and Deleted Items, for the subject and sender.
+3. Check the user's inbox rules and blocked sender list for a rule that moves or deletes this mail.
+4. Ask the email admin to run a message trace for the sender and time, and to check the quarantine.
+5. Release the message from quarantine if found. If the sender got a bounce, handle it as a bounce.

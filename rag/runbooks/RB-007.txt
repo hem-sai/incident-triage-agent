@@ -1,0 +1,9 @@
+# RB-007: shared mailbox full (email)
+Categories: email
+
+## Steps
+1. Confirm it is the shared mailbox that is full: the error names the shared mailbox address, and the user's own mailbox still receives mail normally.
+2. In the email admin portal, find the shared mailbox and compare its size with its quota.
+3. Ask the mailbox owner to archive or delete old items, starting with Deleted Items, Sent Items and large attachments.
+4. If the data must stay, ask the email admin to raise the quota or enable an archive mailbox for the shared mailbox.
+5. Verify new mail arrives in the shared mailbox and the error is gone.

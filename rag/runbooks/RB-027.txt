@@ -1,0 +1,9 @@
+# RB-027: laptop running very slow (software)
+Categories: software
+
+## Steps
+1. Confirm the laptop is slow in general (apps open slowly, the fan runs loud), not only one application or one website.
+2. Open Task Manager and sort by CPU, Memory and Disk to find the process using the most. Close or restart it.
+3. Check free disk space on C:. Under 10% free slows the laptop, so clear temp files and the Downloads folder.
+4. Check Startup apps in Task Manager and turn off the ones that are not needed. Restart the laptop.
+5. If it is still slow after a restart, escalate to desktop support to scan for malware and check the hardware.

@@ -1,0 +1,9 @@
+# RB-012: error 0x80070005 access is denied during install or update (software, access)
+Categories: software, access
+
+## Steps
+1. Confirm the exact code `0x80070005` ("Access is denied") and when it appears: Windows Update, a software installer or a script.
+2. Run the installer again as administrator (right-click, Run as administrator). If the user has no admin rights, go to step 5.
+3. For Windows Update, run the Windows Update troubleshooter, then restart the Windows Update and Background Intelligent Transfer services and retry.
+4. Check whether endpoint security or antivirus blocked the installer, and check the user has write permission on the install folder.
+5. If admin rights are needed, raise an admin-rights or software install request. If the code persists as admin, escalate to desktop support with the update or installer name.

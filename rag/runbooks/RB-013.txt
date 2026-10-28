@@ -1,0 +1,9 @@
+# RB-013: HTTP 503 service unavailable on an internal web application (software, network)
+Categories: software, network
+
+## Steps
+1. Confirm the browser or app shows `HTTP 503 Service Unavailable` (not 404 or 500), and whether it affects everyone or one user.
+2. Check the application's status page or health endpoint, and whether a deployment or maintenance window is running.
+3. If it affects everyone, check that the application service is running and restart it if it is down. Check the load balancer shows healthy targets.
+4. If it affects one user, clear the browser cache and cookies, try another browser, and check the user is not on a bad VPN route.
+5. If it continues, escalate to the application support team with the URL, the time and how many users are affected.

@@ -1,0 +1,9 @@
+# RB-019: cannot open a shared folder, permission denied (access)
+Categories: access
+
+## Steps
+1. Confirm the exact message ("you do not have permission" or "access denied") and the full path of the shared folder.
+2. Check whether the user could open it before, and whether the user is connected to the VPN or the office network.
+3. Find the folder owner and ask for approval to add the user, or add the user to the security group that holds the folder access.
+4. Ask the user to sign out and back in so the new group membership applies, then try the folder again.
+5. If the user is in the right group and still denied, escalate to the file server team with the folder path.

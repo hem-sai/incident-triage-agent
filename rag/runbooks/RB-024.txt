@@ -1,0 +1,9 @@
+# RB-024: USB keyboard or mouse not working (hardware)
+Categories: hardware
+
+## Steps
+1. Confirm the keyboard or mouse does not respond and whether the laptop's own keyboard and trackpad still work.
+2. Unplug the device and plug it into a different USB port. For wireless ones, replace the battery and check the receiver is plugged in.
+3. Try the device on another computer to tell a faulty device from a faulty port.
+4. In Device Manager, uninstall the device, unplug it, restart the computer and plug it back in.
+5. If the device fails on another computer too, replace it through the hardware request process.

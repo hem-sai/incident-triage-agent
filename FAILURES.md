@@ -269,3 +269,31 @@ Severity key:
 - - -
 
 2026-10-24 · P2 · ci/dependencies · Pushed Task 2-4 and CI went red: `pytest` failed at collection with `ModuleNotFoundError: No module named 'langchain_aws'` (traceback: tests/test_api.py → api/main.py → api/triage.py:4). The workflow installs its own hand-typed list (`pip install "fastapi[standard]" boto3 httpx2 pydantic pytest ruff`) instead of reading `pyproject.toml`, so the new `langchain-aws` dependency was never installed there. It passed locally because `uv run` installs from `pyproject.toml` / `uv.lock`; `ruff check .` passed in CI because ruff does not import code. Before -> after: 1 collection error (6 of 19 tests collected, `test_api.py` never loaded) -> fix pushed. Fix: add `"langchain-aws>=1.9.0"` to the `pip install` line in `.github/workflows/ci.yml`; switching CI to `uv sync` + `uv run pytest` so it uses the lockfile is a separate decision. Habit fix: when a commit adds an import of a new package, add it to the CI install step in the same commit, and check the workflow's install line against `pyproject.toml`. Source: .github/workflows/ci.yml
+
+- - -
+
+2026-10-26 · P2 · DSA-two-pointers · 3Sum `-r4` cold retry: first draft had `if nums[i] == nums[i-1]: continue` with no `i > 0` guard (at i=0 it compares to `nums[-1]`, the last element), never moved `l` and `r` after a match (infinite loop), and had no skip-equal-values loops for the two pointers after a match (the duplicate rule was only on the outer loop). A misplaced `if ... continue` inside the `while` skipped nothing. Needed the notes after 30 min; second cold failure on this problem in 2 days (also the 25 Oct audit). Fix: `if i > 0 and nums[i] == nums[i-1]: continue`; after a match `l += 1; r -= 1`, then `while l < r and nums[l] == nums[l-1]: l += 1` and `while l < r and nums[r] == nums[r+1]: r -= 1`. Habit fix: write the duplicate rule in words in Section 2 ("skip a value equal to the one before it, at the fixed index and at both pointers") and hand-test `[0,0,0,0]` and `[-1,-1,0,1]` before submitting. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-26-3 sum-r4.md
+
+- - -
+
+2026-10-26 · P3 · api/error-handling · Code Q&A Q9: wrote that the API retries once on a 502 and left the restate empty. Reality: the API never retries. 502 = Bedrock answered but the output failed schema validation (`ValueError`/`ValidationError`); a retry of a temperature-0 model rarely changes a wrong format. 503 = Bedrock unreachable, throttled or timed out; botocore retries those inside the client (`max_attempts=3` means 4 calls, worst case 4 x (15+30) = 180 s) before the API returns 503. They are separate exceptions, so whichever Python raises first is the one handled. Fix: restated correctly in `2026-10-25-code-answers.md`. Habit fix: when asked what a status code does, point at the line in `main.py` that returns it instead of recalling. Source: daily-todos/2026-10-25-code-answers.md Q9
+
+- - -
+
+2026-10-27 · P2 · scripts/tooling · `scripts/run_baseline.py` broke after the 24 Oct refactor changed `triage_ticket`'s signature. Nothing runs the script automatically (no test, not in CI), so it failed only when run by hand, and it has no `__main__` guard, so importing it fires 20 Bedrock calls. Fix: pass `runnable=` to `triage_ticket`, move the logic into `main()` and call it under `if __name__ == "__main__":`, add a per-ticket print (id, expected, got) so the number can be explained. Habit fix: when a function signature changes, grep for every caller (`scripts/` too), and keep scripts import-safe. Source: scripts/run_baseline.py
+
+- - -
+
+2026-10-27 · P2 · DSA-two-pointers · 3Sum `-r2` first draft skipped duplicates in the wrong direction: `while nums[l] == nums[l+1]` right after `l += 1`, with no `l < r` bound, so the judge raised index-out-of-range. Found from the error, not by hand-testing. Fix: after moving both pointers, compare with the previous element: `while l < r and nums[l] == nums[l-1]: l += 1`. Habit fix: write the duplicate rule in words in Section 2 and hand-test `[0,0,0,0]` and `[-1,-1,0,1]` before submitting. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-27-3sum-r2.md
+
+- - -
+
+2026-10-28 · P2 · DSA-sliding-window · Longest Substring Without Repeating Characters `-r1` first draft (kept in the file's Section 5): `if s[right] not in ws: ws.add(s[right])` ran BEFORE `while s[right] in ws:`, so the while condition was always true right after the add and the window was emptied on every step ("abc" would return 0). Fixed in the final code by checking the duplicate first and adding after: `while s[right] in ws: ws.remove(s[left]); left += 1` then `ws.add(s[right])`. Habit fix: write the order in words in Section 2 ("shrink until s[right] is no longer in the window, THEN add it") and hand-test `"abc"` and `"abba"` before submitting. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-28-LSWRC-r1.md
+
+- - -
+
+2026-10-28 · P2 · DSA-sliding-window · Permutation in String `-a1` first draft (Section 5): window set up as `right = len(s1)` (exclusive end) with the loop `while right < len(s2) - 1`, so the last window was never compared (e.g. s1="ab", s2="ba" returns False). Final code fixed to `right = window - 1` (inclusive end), `while right < len(s2)` and `s2[left:right+1]`. Related: Section 3 says O(n log n), but the code rebuilds a `Counter` for every window, which is O(n*m) time (n = len(s2), m = len(s1)); O(1) space since the alphabet is 26. Habit fix: decide inclusive vs exclusive end in words before the loop, hand-test the last window, and derive complexity from the work done per window. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-28-Permutation in String-a1.md
+
+- - -
+
+2026-10-28 · P3 · DSA-hashing · Group Anagrams `-r1` first draft (Section 5): used `r[sorted(word)]` as the dict key, but `sorted()` returns a list and lists are unhashable (TypeError). Fixed in the final code with `"".join(sorted(word))`. Section 3 also says O(n log n) time and O(1) space; real is O(n * k log k) time (k = longest word) and O(n * k) space for the groups. Habit fix: before using something as a dict key, ask "is it hashable?" (str, int, tuple yes; list, dict, set no), and count the sort cost per word in the complexity. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-28-group anagrams-r1.md

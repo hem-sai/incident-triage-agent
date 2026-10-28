@@ -1,0 +1,9 @@
+# RB-014: ERR_CONNECTION_TIMED_OUT in the browser (network)
+Categories: network
+
+## Steps
+1. Confirm the browser shows `ERR_CONNECTION_TIMED_OUT` ("took too long to respond") and whether it happens for one site or for every site.
+2. Open another site and try the same site on another device on the same network, to tell a site problem from a connection problem.
+3. If every site fails, restart the router or reconnect the Wi-Fi, run `ipconfig /flushdns`, and turn off any wrong proxy setting.
+4. If only one internal site fails, check the VPN is connected and the URL is correct, then `ping` the host name.
+5. If it continues, escalate to the network team with the URL and the output of `tracert`.

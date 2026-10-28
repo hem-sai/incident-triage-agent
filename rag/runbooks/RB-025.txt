@@ -1,0 +1,9 @@
+# RB-025: application crashes or closes right after starting (software)
+Categories: software
+
+## Steps
+1. Confirm which application crashes, the exact error message if any, and whether it started after a recent update.
+2. Restart the computer and open the application again. Check for a pending update for the application.
+3. Run the application's repair option (Settings, Apps, the application, Modify or Repair).
+4. Check Event Viewer, Windows Logs, Application, for the error at the crash time and note the faulting module.
+5. If it still crashes, reinstall the application. If the crash continues, escalate to desktop support with the error and the Event Viewer entry.

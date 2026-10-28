@@ -1,0 +1,9 @@
+# RB-028: Outlook shows Disconnected or Trying to connect (email)
+Categories: email
+
+## Steps
+1. Confirm the Outlook status bar says "Disconnected" or "Trying to connect" and whether Outlook on the web (webmail) opens.
+2. If webmail also fails, check the internet connection and the VPN. If webmail works, the problem is in the Outlook app.
+3. In Outlook, check that "Work Offline" is not switched on, then close Outlook fully and open it again.
+4. Create a new Outlook profile (Control Panel, Mail, Show Profiles, Add) and set the account up again.
+5. If it still fails, escalate to the email team with the account name and the exact status message.

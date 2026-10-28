@@ -1,0 +1,9 @@
+# RB-008: printer shows offline, nothing prints (hardware)
+Categories: hardware
+
+## Steps
+1. Confirm the printer shows "Offline" in the computer's printer list and even a test page does not print. If the printer is online but jobs sit in the queue, this is a different problem.
+2. Check the printer itself: it is powered on, the display has no error, and the network light is on. Print a configuration page to read its IP address.
+3. On the computer, remove the printer and add it again using that IP address, or untick "Use Printer Offline" in the printer settings.
+4. Print a test page. If it is still offline, ping the printer IP address. No reply means a cable, Wi-Fi or network problem.
+5. If the ping fails, escalate to the network team with the printer name and IP address.

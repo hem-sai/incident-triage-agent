@@ -1,0 +1,9 @@
+# RB-023: laptop battery not charging or drains very fast (hardware)
+Categories: hardware
+
+## Steps
+1. Confirm the symptom: the battery icon says "plugged in, not charging", or the charge drops within an hour.
+2. Check the charger is the original one with the right wattage, and the cable and socket are not loose.
+3. Check battery health in the power report (`powercfg /batteryreport`) and look at the design capacity versus the full charge capacity.
+4. Check which apps use the most power in Settings, Battery, and close or remove them.
+5. If the battery health is low or it will not charge with a good charger, escalate to hardware support for a battery replacement.

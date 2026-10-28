@@ -1,0 +1,9 @@
+# RB-009: print jobs stuck in the queue, printer is online (software)
+Categories: software
+
+## Steps
+1. Confirm the printer shows "Ready" or "Online", but documents sit in the print queue as "Printing" or "Error" and nothing comes out.
+2. Cancel all jobs in the queue. If they will not clear, restart the Print Spooler service (services.msc, Print Spooler, Restart).
+3. If jobs are still stuck, stop the Print Spooler, delete the files in `C:\Windows\System32\spool\PRINTERS`, then start the Print Spooler again.
+4. Print a test page. If only one document jams, it is probably corrupt or too large: save it as a PDF and print the PDF.
+5. If every user on the printer is affected, escalate to the team that runs the print server.

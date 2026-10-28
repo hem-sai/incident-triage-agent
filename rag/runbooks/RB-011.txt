@@ -1,0 +1,9 @@
+# RB-011: ORA-12541 TNS no listener (software)
+Categories: software
+
+## Steps
+1. Confirm the exact error `ORA-12541: TNS:no listener` in the application or SQL client, and note the database host name and port (default 1521).
+2. On the database host, check the listener with `lsnrctl status`. "No listener" or a connection refused message means it is not running.
+3. Start it with `lsnrctl start`, then run `lsnrctl status` again and confirm the database service is registered.
+4. If the listener is running, check the host firewall for the port and check the host and port in the client's `tnsnames.ora` entry.
+5. If the listener will not start, escalate to the DBA with the listener log.

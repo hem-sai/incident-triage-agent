@@ -1,0 +1,9 @@
+# RB-020: new joiner needs access to an application (access)
+Categories: access
+
+## Steps
+1. Confirm the new joiner's name, role, manager and the exact application and access level needed.
+2. Check the access request has manager approval. Do not grant access without it.
+3. Add the user to the application's access group or create the user account in the application, using the role that matches the job.
+4. Send the first-login instructions and ask the user to sign in and confirm they can see the right data.
+5. Record the request and the approval in the ticket, and close it once the user confirms.

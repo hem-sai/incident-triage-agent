@@ -1,0 +1,9 @@
+# RB-021: laptop will not power on (hardware)
+Categories: hardware
+
+## Steps
+1. Confirm the laptop shows no lights and no screen when the power button is pressed, and note whether the charger light is on.
+2. Plug in the original charger, try another wall socket, and leave it charging for 15 minutes.
+3. Unplug the charger, hold the power button for 30 seconds to drain leftover power, plug the charger back in and press power.
+4. Remove any docking station or USB devices, then try again.
+5. If it still does not start, escalate to hardware support for a replacement or repair, and note the asset tag.

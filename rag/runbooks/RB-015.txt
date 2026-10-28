@@ -1,0 +1,9 @@
+# RB-015: email bounced with 550 5.7.1 message rejected (email)
+Categories: email
+
+## Steps
+1. Confirm the bounce message contains `550 5.7.1` and copy the full text, including which address and which server rejected the message.
+2. Check the recipient address for typos, and note whether the recipient is external. A 5.7.1 code means the message was refused by policy.
+3. If the text says "Unable to relay", the sender is not authenticated: check the outgoing (SMTP) login settings in the mail client.
+4. If the recipient's server refused our message, ask the email admin to check our SPF and DKIM records and whether our sending address is on a blocklist.
+5. Resend the message once the cause is fixed and confirm it is delivered.

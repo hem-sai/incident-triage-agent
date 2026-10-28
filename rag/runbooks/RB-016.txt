@@ -1,0 +1,9 @@
+# RB-016: Wi-Fi connected but no internet (network)
+Categories: network
+
+## Steps
+1. Confirm the Wi-Fi icon shows connected but websites do not open, and check whether other devices on the same Wi-Fi work.
+2. Turn Wi-Fi off and on, then forget the network and reconnect with the password.
+3. Run `ipconfig /release`, `ipconfig /renew` and `ipconfig /flushdns`. An address starting with 169.254 means the device got no address from the router.
+4. If other devices also have no internet, restart the router. If the problem is on this device only, update the network driver.
+5. If it continues, escalate to the network team with the Wi-Fi name and location.

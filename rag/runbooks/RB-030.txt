@@ -1,0 +1,9 @@
+# RB-030: calendar invites not syncing to the phone (email)
+Categories: email
+
+## Steps
+1. Confirm the invite shows on the laptop calendar or webmail but not on the phone, and note the phone type and mail app.
+2. Check the phone has internet and that calendar sync is switched on for the work account in the mail app settings.
+3. Open the mail app and force a refresh. Check the account's sync period is not set too short.
+4. Remove the work account from the phone and add it again.
+5. If it still does not sync, escalate to the email team with the phone model, app version and the missing invite.

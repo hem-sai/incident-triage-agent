@@ -1,0 +1,9 @@
+# RB-022: external monitor not detected (hardware)
+Categories: hardware
+
+## Steps
+1. Confirm the laptop works but the external monitor shows "No signal" or is not listed in display settings.
+2. Check the monitor is on and set to the right input, and reseat the cable at both ends. Try a different cable or port.
+3. Press Windows key + P and choose Extend or Duplicate. In display settings, click Detect.
+4. Update the graphics driver and restart the laptop with the monitor connected.
+5. If a dock is used, try connecting directly. If it still fails, escalate to hardware support.

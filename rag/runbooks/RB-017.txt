@@ -1,0 +1,9 @@
+# RB-017: cannot open an internal website, server name not found (network)
+Categories: network
+
+## Steps
+1. Confirm the error says the server name or DNS address could not be found for an internal website, and whether public websites still open.
+2. Check the VPN is connected if the user is remote. Internal names do not resolve without it.
+3. Run `nslookup` on the site name. If it fails, run `ipconfig /flushdns` and try again.
+4. Check the URL spelling and try the site's IP address. If the IP address works, the problem is DNS.
+5. If DNS fails for everyone, escalate to the network team with the site name.

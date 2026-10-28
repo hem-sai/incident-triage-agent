@@ -1,0 +1,9 @@
+# RB-018: MFA code not accepted or phone lost (access)
+Categories: access
+
+## Steps
+1. Confirm the user can enter the password but the MFA code is rejected, or the phone with the authenticator app is lost, replaced or reset.
+2. If the code is rejected, check the time on the phone is set to automatic. A wrong clock makes codes invalid. Try a fresh code.
+3. If the phone is lost or replaced, verify the user's identity using the service desk's identity checks.
+4. Reset the user's MFA registration in the identity admin portal and ask the user to register the new device.
+5. Confirm the user can sign in, and that the old device is removed.
