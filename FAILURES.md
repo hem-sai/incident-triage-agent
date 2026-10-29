@@ -297,3 +297,7 @@ Severity key:
 - - -
 
 2026-10-28 · P3 · DSA-hashing · Group Anagrams `-r1` first draft (Section 5): used `r[sorted(word)]` as the dict key, but `sorted()` returns a list and lists are unhashable (TypeError). Fixed in the final code with `"".join(sorted(word))`. Section 3 also says O(n log n) time and O(1) space; real is O(n * k log k) time (k = longest word) and O(n * k) space for the groups. Habit fix: before using something as a dict key, ask "is it hashable?" (str, int, tuple yes; list, dict, set no), and count the sort cost per word in the complexity. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-28-group anagrams-r1.md
+
+- - -
+
+2026-10-28 · P3 · Python-collections · Method drill 28 Oct Ex.2: wrote `Counter(rows)` on a list of dicts to count the `type` field; dicts are unhashable, so this raises TypeError, and the notebook has no Attempt 2 fix cell (the bottom says 1 fix). Fix: feed Counter only the field: `dict(Counter(r["type"] for r in rows))`. Same root as the Group Anagrams list key the same day: whatever you count or use as a key must be hashable. Habit fix: before Counter/dict/set, ask "what exactly is each item I am feeding in?", and always write the Attempt 2 cell. Source: interview-runway/python/method_drills/2026-10-28-method_drill.ipynb
