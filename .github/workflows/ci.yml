@@ -8,6 +8,6 @@ jobs:
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.12"
-      - run: pip install "fastapi[standard]" boto3 "langchain-aws>=1.9.0" httpx2 pydantic pytest ruff
+      - run: pip install "fastapi[standard]" boto3 "langchain-aws>=1.9.0" langchain-text-splitters httpx2 pydantic pytest ruff
       - run: ruff check .
       - run: pytest

@@ -42,6 +42,9 @@ The 25 Oct and 28 Oct runs use the same code, model and temperature, and the sco
 
 Note: pytest uses a fake Bedrock client, so it proves plumbing, not model behaviour.
 
+## Retrieval index
+`uv run python -m rag.index` loads the 30 runbooks in `rag/runbooks/`, splits them with `RecursiveCharacterTextSplitter`, embeds the chunks with Titan Text Embeddings V2 (`amazon.titan-embed-text-v2:0`) through `BedrockEmbeddings`, and stores them in an `InMemoryVectorStore`. Titan v2 is available in `eu-north-1`, the same region as the Nova calls, so no other region is needed. Each chunk keeps its `runbook_id` (the file name) in metadata. `build_index(chunk_size, chunk_overlap)` takes both settings as parameters. The index is rebuilt on every run and lost when the process exits (a learning shortcut; production would use a persistent store). One runbook can return several chunks in the top hits, so `retrieve` has to dedupe by `runbook_id`.
+
 ## Folders
 - `api/` – FastAPI app and Pydantic models
 - `graph/` – LangGraph workflow
