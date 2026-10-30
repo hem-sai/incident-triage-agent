@@ -301,3 +301,17 @@ Severity key:
 - - -
 
 2026-10-28 · P3 · Python-collections · Method drill 28 Oct Ex.2: wrote `Counter(rows)` on a list of dicts to count the `type` field; dicts are unhashable, so this raises TypeError, and the notebook has no Attempt 2 fix cell (the bottom says 1 fix). Fix: feed Counter only the field: `dict(Counter(r["type"] for r in rows))`. Same root as the Group Anagrams list key the same day: whatever you count or use as a key must be hashable. Habit fix: before Counter/dict/set, ask "what exactly is each item I am feeding in?", and always write the Attempt 2 cell. Source: interview-runway/python/method_drills/2026-10-28-method_drill.ipynb
+
+- - -
+
+2026-10-29 · P3 · DSA-sliding-window · LRCR `-a1` (28 Oct): restated the problem correctly (longest substring of one letter after at most k replacements) but Section 2 planned to "find the longest substring without repeating chars first, then replace around it", which is a different problem; 25 min, no code, an LLM explanation did not land. On 29 Oct `-a2` the window condition `(right - left + 1) - max_freq > k` was written correctly, but the one-line approach still says `< k` while the code says `> k`. Habit fix: before any code, write the one condition that makes the window INVALID in words (here: window size minus count of the most common letter is more than k), and make the approach text match the code. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-28-LRCR-a1.md, 2026-10-29-LRCR-a2.md
+
+
+- - -
+
+2026-10-30 · P2 · DSA-sliding-window · LRCR `-r1` (30 Oct, the cold retry owed since 28 Oct): the file is the Longest Substring Without Repeating Characters solution under the LRCR title (restate says "longest substring without repeating characters", code is `lengthOfLongestSubstring`, file is the same size and 1 minute newer than `2026-10-28-LSWRC-r1.md`). That is a different problem, so LRCR is still not solved. Second time the same misread as 28 Oct (LRCR `-a1`: non-repeating substring instead of replacement). Habit fix: open the LeetCode page for the problem named in the file, copy the signature (`characterReplacement(self, s, k)`) into the file first, and write the window-INVALID condition in words before any code. Never reuse another problem's file as a starting point. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-30-LRCR-r1.md
+
+
+- - -
+
+2026-10-30 · P3 · DSA-stack · Valid Parentheses `-a1` first draft (Section 5): `stack[-1]` is read before checking the stack is empty, so input like `")"` raises IndexError; the branches `elif item in chars and ...` repeat the test and the final `else` can never run. Fixed only after switching to the lesson skeleton (empty check, then pop, then compare), yet Section 6 says "solved clean" with no mention of the skeleton. Habit fix: for every pop/peek, ask "what if the stack is empty?" first, and tick "Yes, needed notes" when the lesson skeleton was used. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-29-valid-parentheses-a1.md
