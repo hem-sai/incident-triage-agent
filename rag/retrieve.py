@@ -2,7 +2,7 @@ from langchain_chroma import Chroma
 
 from rag.index import build_index
 
-FETCH_CHUNKS = 10 
+FETCH_CHUNKS = 50
 
 
 def ranked_runbook_ids(store: Chroma, question: str) -> list[str]:

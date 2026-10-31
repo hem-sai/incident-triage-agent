@@ -315,3 +315,13 @@ Severity key:
 - - -
 
 2026-10-30 · P3 · DSA-stack · Valid Parentheses `-a1` first draft (Section 5): `stack[-1]` is read before checking the stack is empty, so input like `")"` raises IndexError; the branches `elif item in chars and ...` repeat the test and the final `else` can never run. Fixed only after switching to the lesson skeleton (empty check, then pop, then compare), yet Section 6 says "solved clean" with no mention of the skeleton. Habit fix: for every pop/peek, ask "what if the stack is empty?" first, and tick "Yes, needed notes" when the lesson skeleton was used. Source: dsa/Week-05_Oct-26_to_Nov-01/2026-10-29-valid-parentheses-a1.md
+
+
+- - -
+
+2026-10-31 · P3 · retrieval · Confusable question G-28 "the team inbox bounces mail but my own mail comes in fine" (expected RB-007 shared mailbox full) ranked 4th at chunk size 1000/100 (top 3: RB-015 bounce 550 5.7.1, RB-029 mail not received, RB-005 mailbox full); at 250/40 and 500/50 it ranked in the top 3. At 1000 every runbook is one chunk (30 chunks), so the vector averages the whole runbook; the question says "team inbox" and "bounces" while RB-007 says "shared mailbox", and the other email runbooks match "bounce" and "mail" more strongly. Likely cause (not yet tested): topic dilution in big chunks of near-identical email runbooks. Fix: use 500/50 (chosen) and add more confusable questions so n=5 is not decisive. Habit fix: check how many chunks a config produces and read the top-3 chunk text for a miss before blaming the embedding model. Source: rag/RESULTS.md, `python -m rag.evaluate 1000 100`
+
+
+- - -
+
+2026-10-31 · P2 · deploy · Docker Desktop shows "You have been signed out ... Membership in the [unisysdock] organization is required. Sign in enforced by your administrators (via Registry key)" on the company laptop: container tooling is blocked by IT policy, so the playbook's hello-world image build and ECR push cannot run locally. Not a code bug; an environment limit found at the Docker pre-flight. Fix: do not work around the policy (no registry edits, no other container engines on the managed laptop); ask the internal IT chatbot what is approved; plan the deploy so no local Docker is needed (zip-packaged Lambda, or build the image in GitHub Actions with OIDC, already planned for Wk11). Habit fix: check tool restrictions on the machine in week 1, not at the deploy step. Source: Docker Desktop sign-in screen, 31 Oct
