@@ -20,5 +20,6 @@ class TicketState(TypedDict):
     triage: TriageResult | None         #triage_ticket, overwrite, no reducer	
     retrieved_chunks: list[str] | None  #retreive(), overwrite
     resolution: Resolution | None       #resolve node, overwrite, no reducer	
-    needs_human: bool                   #triage on low confidence or severity 1,overwrite, no reducer	
-    error: Annotated[list[str], operator.add] #any node that catches an exception; starts as [],append, with a reducer
+    needs_human: bool #triage on low confidence or severity 1,overwrite, no reducer	
+    error: Annotated[list[str], operator.add] #any node that catches an exception; starts as [],
+    #append, with a reducer
